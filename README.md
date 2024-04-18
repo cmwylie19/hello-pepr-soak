@@ -6,10 +6,11 @@ deploy the module and watch logs in one terminal
 ```bash
 kubectl apply -f dist/pepr-module-6233c672-7fca-5603-8e90-771828dd30fa.yaml
 kubectl create ns pepr-demo
-sleep 5
+sleep 15
 kubectl wait --for=condition=read po -l pepr.dev/controller=watcher --timeout=300s
 kubectl logs -n pepr-system -l pepr.dev/controller=watcher -f | jq 'select(.url != "/healthz")'
 ```
+`jq 'select(.msg | test("^Watch event.+"))' `
 
 In another terminal create a `ConfigMap` every 60 seconds
 
@@ -33,3 +34,9 @@ done
 
 
 **CORRECT RESULT** - There is always a corresponding secret for each configmap
+
+
+Results:
+![106 Mins](image.png)
+April 16 - worked for 174 minutes
+
