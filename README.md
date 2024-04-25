@@ -2,6 +2,8 @@
 
 - [Background](#background)
 - [Cluster Setup](#cluster-setup)
+- [Get Started](#get-started)
+- [results](#results)
 
 ## Background
 
@@ -125,7 +127,268 @@ apiVersion: batch/v1
 kind: CronJob
 metadata:
   creationTimestamp: null
-  name: podgen
+  name: podgen0
+  namespace: pepr-demo
+spec:
+  jobTemplate:
+    metadata:
+      creationTimestamp: null
+      name: podgen
+    spec:
+      ttlSecondsAfterFinished: 5
+      template:
+        metadata:
+          creationTimestamp: null
+          labels:
+            bug: "reproduce"
+            api: "call"
+        spec:
+          containers:
+          - image: ubuntu
+            command: ["sh","-c","sleep 10"]
+            name: sleepanddie
+            resources: {}
+          restartPolicy: Never
+  schedule: 0/1 * * * *
+status: {}
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  creationTimestamp: null
+  name: podgen1
+  namespace: pepr-demo
+spec:
+  jobTemplate:
+    metadata:
+      creationTimestamp: null
+      name: podgen
+    spec:
+      ttlSecondsAfterFinished: 5
+      template:
+        metadata:
+          creationTimestamp: null
+          labels:
+            bug: "reproduce"
+            api: "call"
+        spec:
+          containers:
+          - image: ubuntu
+            command: ["sh","-c","sleep 10"]
+            name: sleepanddie
+            resources: {}
+          restartPolicy: Never
+  schedule: 0/1 * * * *
+status: {}
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  creationTimestamp: null
+  name: podgen2
+  namespace: pepr-demo
+spec:
+  jobTemplate:
+    metadata:
+      creationTimestamp: null
+      name: podgen
+    spec:
+      ttlSecondsAfterFinished: 5
+      template:
+        metadata:
+          creationTimestamp: null
+          labels:
+            bug: "reproduce"
+            api: "call"
+        spec:
+          containers:
+          - image: ubuntu
+            command: ["sh","-c","sleep 10"]
+            name: sleepanddie
+            resources: {}
+          restartPolicy: Never
+  schedule: 0/1 * * * *
+status: {}
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  creationTimestamp: null
+  name: podgen3
+  namespace: pepr-demo
+spec:
+  jobTemplate:
+    metadata:
+      creationTimestamp: null
+      name: podgen
+    spec:
+      ttlSecondsAfterFinished: 5
+      template:
+        metadata:
+          creationTimestamp: null
+          labels:
+            bug: "reproduce"
+            api: "call"
+        spec:
+          containers:
+          - image: ubuntu
+            command: ["sh","-c","sleep 10"]
+            name: sleepanddie
+            resources: {}
+          restartPolicy: Never
+  schedule: 0/1 * * * *
+status: {}
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  creationTimestamp: null
+  name: podgen4
+  namespace: pepr-demo
+spec:
+  jobTemplate:
+    metadata:
+      creationTimestamp: null
+      name: podgen
+    spec:
+      ttlSecondsAfterFinished: 5
+      template:
+        metadata:
+          creationTimestamp: null
+          labels:
+            bug: "reproduce"
+            api: "call"
+        spec:
+          containers:
+          - image: ubuntu
+            command: ["sh","-c","sleep 10"]
+            name: sleepanddie
+            resources: {}
+          restartPolicy: Never
+  schedule: 0/1 * * * *
+status: {}
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  creationTimestamp: null
+  name: podgen5
+  namespace: pepr-demo
+spec:
+  jobTemplate:
+    metadata:
+      creationTimestamp: null
+      name: podgen
+    spec:
+      ttlSecondsAfterFinished: 5
+      template:
+        metadata:
+          creationTimestamp: null
+          labels:
+            bug: "reproduce"
+            api: "call"
+        spec:
+          containers:
+          - image: ubuntu
+            command: ["sh","-c","sleep 10"]
+            name: sleepanddie
+            resources: {}
+          restartPolicy: Never
+  schedule: 0/1 * * * *
+status: {}
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  creationTimestamp: null
+  name: podgen6
+  namespace: pepr-demo
+spec:
+  jobTemplate:
+    metadata:
+      creationTimestamp: null
+      name: podgen
+    spec:
+      ttlSecondsAfterFinished: 5
+      template:
+        metadata:
+          creationTimestamp: null
+          labels:
+            bug: "reproduce"
+            api: "call"
+        spec:
+          containers:
+          - image: ubuntu
+            command: ["sh","-c","sleep 10"]
+            name: sleepanddie
+            resources: {}
+          restartPolicy: Never
+  schedule: 0/1 * * * *
+status: {}
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  creationTimestamp: null
+  name: podgen7
+  namespace: pepr-demo
+spec:
+  jobTemplate:
+    metadata:
+      creationTimestamp: null
+      name: podgen
+    spec:
+      ttlSecondsAfterFinished: 5
+      template:
+        metadata:
+          creationTimestamp: null
+          labels:
+            bug: "reproduce"
+            api: "call"
+        spec:
+          containers:
+          - image: ubuntu
+            command: ["sh","-c","sleep 10"]
+            name: sleepanddie
+            resources: {}
+          restartPolicy: Never
+  schedule: 0/1 * * * *
+status: {}
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  creationTimestamp: null
+  name: podgen8
+  namespace: pepr-demo
+spec:
+  jobTemplate:
+    metadata:
+      creationTimestamp: null
+      name: podgen
+    spec:
+      ttlSecondsAfterFinished: 5
+      template:
+        metadata:
+          creationTimestamp: null
+          labels:
+            bug: "reproduce"
+            api: "call"
+        spec:
+          containers:
+          - image: ubuntu
+            command: ["sh","-c","sleep 10"]
+            name: sleepanddie
+            resources: {}
+          restartPolicy: Never
+  schedule: 0/1 * * * *
+status: {}
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  creationTimestamp: null
+  name: podgen9
   namespace: pepr-demo
 spec:
   jobTemplate:
@@ -180,7 +443,7 @@ done
 
 ## Results 
 
-- April 25 (NO ERRORS!)
+- April 25 (No Errors - 1 CronJob)
 - - VM Running Kind
 ```bash
 case@brickell-ave:~$ k get cj,po,secret -n pepr-demo
