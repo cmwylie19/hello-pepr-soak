@@ -153,8 +153,30 @@ EOF
 ```
 
 
+Watch for secrets and pods, because if any stick around then you have reproduced the issue:
 
+```bash
+while true; do
+  kubectl get secret,po -n pepr-demo --no-headers
+  sleep 5
+  clear
+done
+```
 
+Watch the Watch Controller pods:
+
+```bash
+kubectl logs -n pepr-system -l pepr.dev/controller=watcher -f | jq 'select(.url != "/healthz")'
+```
+
+Watch the audit logs
+
+```bash
+while true; do
+  docker exec kind-control-plane cat /var/log/kubernetes/kube-apiserver-audit.log | tail | jq
+  sleep 5
+done
+```
 ## Random Debugging /Ignore
 
 
