@@ -177,6 +177,23 @@ while true; do
   sleep 5
 done
 ```
+
+## Results 
+
+- April 25 (NO ERRORS!)
+- - VM Running Kind
+```bash
+case@brickell-ave:~$ k get cj,po,secret -n pepr-demo
+NAME                   SCHEDULE      SUSPEND   ACTIVE   LAST SCHEDULE   AGE
+cronjob.batch/podgen   0/1 * * * *   False     0        18s             172m
+```
+- - Kind 
+```bash
+┌─[cmwylie19@Cases-MacBook-Pro] - [~/hello-pepr-soak] - [2024-04-25 12:59:31]
+└─[0] <git:(main cd8ab79) > k get cj,secret,po -n pepr-demo 
+NAME                   SCHEDULE      SUSPEND   ACTIVE   LAST SCHEDULE   AGE
+cronjob.batch/podgen   0/1 * * * *   False     0        49s             175m
+```
 ## Random Debugging /Ignore
 
 
@@ -224,4 +241,17 @@ k logs -n pepr-system deploy/pepr-uds-core-watcher --since=1h | egrep "for istio
 kubectl get events --field-selector involvedObject.name=pod_name
 
 k logs -n pepr-system pepr-uds-core-watcher-b8d8c5c5b-mzh45  --since=5m  | jq 'select(.url != "/healthz")' | jq 'select(.msg | test("^Processing Pod.+"))' | grep Processing
+```
+
+```
+apiVersion: v1
+data:
+  a: YQ==
+kind: Secret
+metadata:
+  creationTimestamp: null
+  name: t
+  namespace: pepr-demo
+  labels:
+    deletedeletedelete: "yes"
 ```
