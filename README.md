@@ -28,41 +28,79 @@ done
 ## Audit Cluster 
 
 ```yaml
-cat <<EOF >>config.yaml
+cat <<EOF > audit-policy.yaml
+apiVersion: audit.k8s.io/v1
+kind: Policy
+rules:
+- level: Metadata
+EOF
+cat <<EOF > kind-config.yaml
 kind: Cluster
 apiVersion: kind.x-k8s.io/v1alpha4
 nodes:
 - role: control-plane
-  extraMounts:
-    - hostPath: ./audit-policy.yaml
-      containerPath: /etc/kubernetes/audit-policy.yaml
   kubeadmConfigPatches:
-    - |
-      kind: ClusterConfiguration
-      apiServer:
+  - |
+    kind: ClusterConfiguration
+    apiServer:
+        # enable auditing flags on the API server
         extraArgs:
-          audit-policy-file: /etc/kubernetes/audit-policy.yaml
-          audit-log-path: /var/log/kubernetes/audit.log
-          audit-log-maxage: "30"
-          audit-log-maxbackup: "10"
-          audit-log-maxsize: "100"
+          audit-log-path: /var/log/kubernetes/kube-apiserver-audit.log
+          audit-policy-file: /etc/kubernetes/policies/audit-policy.yaml
+        # mount new files / directories on the control plane
+        extraVolumes:
+          - name: audit-policies
+            hostPath: /etc/kubernetes/policies
+            mountPath: /etc/kubernetes/policies
+            readOnly: true
+            pathType: "DirectoryOrCreate"
+          - name: "audit-logs"
+            hostPath: "/var/log/kubernetes"
+            mountPath: "/var/log/kubernetes"
+            readOnly: false
+            pathType: DirectoryOrCreate
+  # mount the local file on the control plane
+  extraMounts:
+  - hostPath: ./audit-policy.yaml
+    containerPath: /etc/kubernetes/policies/audit-policy.yaml
+    readOnly: true
 EOF
-cat <<EOF >>audit-policy.yaml
-apiVersion: audit.k8s.io/v1
-kind: Policy
-rules:
-  - level: Metadata
-EOF
-kind create cluster --config config.yaml
+kind create cluster --config kind-config.yaml
 ```
 
-View Audi logs
+View Audit logs
 
 ```bash
-docker ps | grep kube-apiserver
-docker exec -it <container-id> cat /var/log/kubernetes/audit.log
+docker exec kind-control-plane cat /var/log/kubernetes/kube-apiserver-audit.log
 ```
 
+Troubleshoot
+
+```bash
+docker exec kind-control-plane ls /etc/kubernetes/policies
+```
+
+expected
+```bash
+audit-policy.yaml
+```
+
+API SErver contain the mounts and arugments?
+
+```bash
+docker exec kind-control-plane cat /etc/kubernetes/manifests/kube-apiserver.yaml | grep audit
+```
+
+expected
+
+```yaml
+    - --audit-log-path=/var/log/kubernetes/kube-apiserver-audit.log
+    - --audit-policy-file=/etc/kubernetes/policies/audit-policy.yaml
+      name: audit-logs
+      name: audit-policies
+    name: audit-logs
+    name: audit-policies
+```
 
 
 Results:
