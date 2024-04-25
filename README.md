@@ -1,31 +1,22 @@
 # Soak Test
 
-deploy the module and watch logs in one terminal
+- [Background](#background)
+- [Cluster Setup](#cluster-setup)
 
-In another terminal create a `ConfigMap` every 60 seconds
+## Background
 
-```bash
-for x in $(seq 999);
-do
-kubectl create cm a-$x -n pepr-demo --from-literal=a=a;
-sleep 60; 
-done
-```
+The idea is that Pepr create a Watch connection with the Kubernetes API Server for `Pods` with labels `api` and `bug` and for `Secrets` with label `deletedeletedelete`  in `pepr-demo` namespace.
 
-In another terminal get secrets every 60 seconds
+A successful soak should result in:
+1. No pods in the `pepr-demo` namespace
+2. No secrets in the `pepr-demo` namespace
 
-```bash
-for x in $(seq 999);
-do
-kubectl get secret -n pepr-demo;
-sleep 60; 
-done
-```
+The Watcher deployment is running at `LOG_LEVEL` debug while the admission deployment is on info to keep the irrelvent noise down.
 
 
-**CORRECT RESULT** - There is always a corresponding secret for each configmap
+## Cluster Setup
 
-## Audit Cluster 
+Create a kind cluster with auditing.  
 
 ```yaml
 cat <<EOF > audit-policy.yaml
@@ -68,7 +59,7 @@ EOF
 kind create cluster --config kind-config.yaml
 ```
 
-View Audit logs
+Make sure you got audit logs
 
 ```bash
 docker exec kind-control-plane cat /var/log/kubernetes/kube-apiserver-audit.log
@@ -103,11 +94,68 @@ expected
 ```
 
 
-Results:
-![106 Mins](image.png)
-April 16 - worked for 174 minutes
+## Get Started 
 
-## Random Debugging 
+deploy the module and watch logs in one terminal
+
+```yaml
+kubectl apply -f dist
+```
+
+Logs
+
+```bash
+ k logs -n pepr-system -l pepr.dev/controller=watcher -f | jq 'select(.url != "/healthz")'
+``` 
+
+
+In another terminal create a `ConfigMap` every 60 seconds
+
+```yaml
+kubectl apply -f -<<EOF
+apiVersion: v1
+kind: Namespace
+metadata:
+  creationTimestamp: null
+  name: pepr-demo
+spec: {}
+status: {}
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  creationTimestamp: null
+  name: podgen
+  namespace: pepr-demo
+spec:
+  jobTemplate:
+    metadata:
+      creationTimestamp: null
+      name: podgen
+    spec:
+      ttlSecondsAfterFinished: 5
+      template:
+        metadata:
+          creationTimestamp: null
+          labels:
+            bug: "reproduce"
+            api: "call"
+        spec:
+          containers:
+          - image: ubuntu
+            command: ["sh","-c","sleep 10"]
+            name: sleepanddie
+            resources: {}
+          restartPolicy: Never
+  schedule: 0/1 * * * *
+status: {}
+EOF
+```
+
+
+
+
+## Random Debugging /Ignore
 
 
 ```bash
