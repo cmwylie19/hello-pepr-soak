@@ -3,7 +3,7 @@
 - [Background](#background)
 - [Cluster Setup](#cluster-setup)
 - [Get Started](#get-started)
-- [results](#results)
+- [Results](#results)
 
 ## Background
 
@@ -444,7 +444,7 @@ done
 ## Results 
 
 - April 25 
-  - Kind ( 10 CronJobs )
+ - Kind ( 10 CronJobs )
 ```bash
 └─[0] <git:(main 9db6935) > k get cj,po,secret -n pepr-demo
 NAME                    SCHEDULE      SUSPEND   ACTIVE   LAST SCHEDULE   AGE
@@ -459,13 +459,13 @@ cronjob.batch/podgen7   0/1 * * * *   False     0        37s             128m
 cronjob.batch/podgen8   0/1 * * * *   False     0        37s             128m
 cronjob.batch/podgen9   0/1 * * * *   False     0        37s             128m
 ```
-  - Kind (No Errors - 1 CronJob)
+ - Kind (amd64) (No Errors - 1 CronJob)
 ```bash
 case@brickell-ave:~$ k get cj,po,secret -n pepr-demo
 NAME                   SCHEDULE      SUSPEND   ACTIVE   LAST SCHEDULE   AGE
 cronjob.batch/podgen   0/1 * * * *   False     0        18s             172m
 ```
-  - Kind 
+ - Kind 
 ```bash
 ┌─[cmwylie19@Cases-MacBook-Pro] - [~/hello-pepr-soak] - [2024-04-25 12:59:31]
 └─[0] <git:(main cd8ab79) > k get cj,secret,po -n pepr-demo 
