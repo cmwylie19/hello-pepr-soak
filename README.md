@@ -120,6 +120,8 @@ kind: Namespace
 metadata:
   creationTimestamp: null
   name: pepr-demo
+  labels:
+    istio-injection: enabled
 spec: {}
 status: {}
 ---
