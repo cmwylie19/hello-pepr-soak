@@ -142,6 +142,7 @@ spec:
         metadata:
           creationTimestamp: null
           labels:
+            "zarf.dev/agent": "ignore"
             bug: "reproduce"
             api: "call"
         spec:
@@ -173,6 +174,7 @@ spec:
           labels:
             bug: "reproduce"
             api: "call"
+            "zarf.dev/agent": "ignore"
         spec:
           containers:
           - image: ubuntu
@@ -200,6 +202,7 @@ spec:
         metadata:
           creationTimestamp: null
           labels:
+            "zarf.dev/agent": "ignore"
             bug: "reproduce"
             api: "call"
         spec:
@@ -229,6 +232,7 @@ spec:
         metadata:
           creationTimestamp: null
           labels:
+            "zarf.dev/agent": "ignore"
             bug: "reproduce"
             api: "call"
         spec:
@@ -258,6 +262,7 @@ spec:
         metadata:
           creationTimestamp: null
           labels:
+            "zarf.dev/agent": "ignore"
             bug: "reproduce"
             api: "call"
         spec:
@@ -289,6 +294,7 @@ spec:
           labels:
             bug: "reproduce"
             api: "call"
+            "zarf.dev/agent": "ignore"
         spec:
           containers:
           - image: ubuntu
@@ -318,6 +324,7 @@ spec:
           labels:
             bug: "reproduce"
             api: "call"
+            "zarf.dev/agent": "ignore"
         spec:
           containers:
           - image: ubuntu
@@ -347,6 +354,7 @@ spec:
           labels:
             bug: "reproduce"
             api: "call"
+            "zarf.dev/agent": "ignore"
         spec:
           containers:
           - image: ubuntu
@@ -376,6 +384,7 @@ spec:
           labels:
             bug: "reproduce"
             api: "call"
+            "zarf.dev/agent": "ignore"
         spec:
           containers:
           - image: ubuntu
@@ -405,6 +414,7 @@ spec:
           labels:
             bug: "reproduce"
             api: "call"
+            "zarf.dev/agent": "ignore"
         spec:
           containers:
           - image: ubuntu
@@ -448,7 +458,7 @@ done
 **April 25** 
  - Kind ( 10 CronJobs )
 ```bash
-└─[0] <git:(main 9db6935) > k get cj,po,secret -n pepr-demo
+└─[0] <git:(main 9db6935) > k get cj  ,po,secret -n pepr-demo
 NAME                    SCHEDULE      SUSPEND   ACTIVE   LAST SCHEDULE   AGE
 cronjob.batch/podgen0   0/1 * * * *   False     0        37s             128m
 cronjob.batch/podgen1   0/1 * * * *   False     0        37s             128m
