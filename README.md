@@ -18,6 +18,32 @@ The Watcher deployment is running at `LOG_LEVEL` debug while the admission deplo
 
 ## Cluster Setup
 
+#### k3d 
+
+Create a k3d cluster with audit logging enabled
+
+```yaml
+cat <<EOF > audit-policy.yaml
+apiVersion: audit.k8s.io/v1
+kind: Policy
+rules:
+- level: Metadata
+EOF
+k3d cluster create auditer \
+  --k3s-arg '--kube-apiserver-arg=audit-policy-file=/etc/kubernetes/policies/audit-policy.yaml@server:*' \
+  --k3s-arg '--kube-apiserver-arg=audit-log-path=/var/log/kubernetes/audit.log@server:*' \
+  --k3s-arg '--kube-apiserver-arg=audit-log-format=json@server:*' \
+  --volume $(pwd)/audit-policy.yaml:/etc/kubernetes/policies/audit-policy.yaml
+```
+
+View audit logs
+
+```bash
+docker exec -it k3d-auditer-server-0 cat /var/log/kubernetes/audit.log
+```
+
+#### Kind
+
 Create a kind cluster with auditing.  
 
 ```yaml
