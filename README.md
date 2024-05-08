@@ -2,18 +2,20 @@
 
 - [Background](#background)
 - [Cluster Setup](#cluster-setup)
+  - [k3d](#k3d)
+  - [Kind](#kind)
 - [Get Started](#get-started)
-- [Results](#results)
+- [Random Debugging](#random-debugging)
 
 ## Background
 
-The idea is that Pepr create a Watch connection with the Kubernetes API Server for `Pods` with labels `api` and `bug` and for `Secrets` with label `deletedeletedelete`  in `pepr-demo` namespace.
+Pepr watches for `Pods` with labels `api` and `bug` and for `Secrets` with label `deletedeletedelete`  in `pepr-demo` namespace.
 
 A successful soak should result in:
 1. No pods in the `pepr-demo` namespace
 2. No secrets in the `pepr-demo` namespace
 
-The Watcher deployment is running at `LOG_LEVEL` debug while the admission deployment is on info to keep the irrelvent noise down.
+The Watcher deployment is running at `LOG_LEVEL` debug while the admission deployment is on info to keep the irrelevant noise down.
 
 
 ## Cluster Setup
@@ -104,7 +106,7 @@ expected
 audit-policy.yaml
 ```
 
-API SErver contain the mounts and arugments?
+API Server contain the mounts and arugments?
 
 ```bash
 docker exec kind-control-plane cat /etc/kubernetes/manifests/kube-apiserver.yaml | grep audit
@@ -124,7 +126,13 @@ expected
 
 ## Get Started 
 
-deploy the module and watch logs in one terminal
+Download [istioctl](https://istio.io/latest/docs/setup/getting-started/#download)
+
+```bash
+istioctl install --set profile=demo -y
+```
+
+Deploy the module and watch logs in one terminal
 
 ```yaml
 kubectl apply -f dist
@@ -137,7 +145,7 @@ Logs
 ``` 
 
 
-In another terminal create a `ConfigMap` every 60 seconds
+In another terminal create 10 `CronJob`(s) that produces 10 pods with sidecars every 60 seconds
 
 ```yaml
 kubectl apply -f -<<EOF
@@ -479,39 +487,7 @@ while true; do
 done
 ```
 
-## Results 
-
-**April 25** 
- - Kind ( 10 CronJobs )
-```bash
-└─[0] <git:(main 9db6935) > k get cj  ,po,secret -n pepr-demo
-NAME                    SCHEDULE      SUSPEND   ACTIVE   LAST SCHEDULE   AGE
-cronjob.batch/podgen0   0/1 * * * *   False     0        37s             128m
-cronjob.batch/podgen1   0/1 * * * *   False     0        37s             128m
-cronjob.batch/podgen2   0/1 * * * *   False     0        37s             128m
-cronjob.batch/podgen3   0/1 * * * *   False     0        37s             128m
-cronjob.batch/podgen4   0/1 * * * *   False     0        37s             128m
-cronjob.batch/podgen5   0/1 * * * *   False     0        37s             128m
-cronjob.batch/podgen6   0/1 * * * *   False     0        37s             128m
-cronjob.batch/podgen7   0/1 * * * *   False     0        37s             128m
-cronjob.batch/podgen8   0/1 * * * *   False     0        37s             128m
-cronjob.batch/podgen9   0/1 * * * *   False     0        37s             128m
-```
- - Kind (amd64) (No Errors - 1 CronJob)
-```bash
-case@brickell-ave:~$ k get cj,po,secret -n pepr-demo
-NAME                   SCHEDULE      SUSPEND   ACTIVE   LAST SCHEDULE   AGE
-cronjob.batch/podgen   0/1 * * * *   False     0        18s             172m
-```
- - Kind 
-```bash
-┌─[cmwylie19@Cases-MacBook-Pro] - [~/hello-pepr-soak] - [2024-04-25 12:59:31]
-└─[0] <git:(main cd8ab79) > k get cj,secret,po -n pepr-demo 
-NAME                   SCHEDULE      SUSPEND   ACTIVE   LAST SCHEDULE   AGE
-cronjob.batch/podgen   0/1 * * * *   False     0        49s             175m
-```
-## Random Debugging /Ignore
-
+## Random Debugging
 
 ```bash
 kubectl apply -f -<<EOF
